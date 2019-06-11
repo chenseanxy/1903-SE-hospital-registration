@@ -56,9 +56,27 @@ class UserDAO(object):
         return DBConnect.getone(query, (username,))
     
     @classmethod
-    def list(cls):
+    def listAll(cls):
         query = (f"SELECT * FROM {cls.tableName}")
         results = DBConnect.getall(query,())
+        users = []
+        for result in results:
+            users.append(User(result))
+        return users
+
+    @classmethod
+    def listDoctors(cls):
+        query = (f"SELECT * FROM {cls.tableName} WHERE utype=%s")
+        results = DBConnect.getall(query,("doctor",))
+        users = []
+        for result in results:
+            users.append(User(result))
+        return users
+    
+    @classmethod
+    def listPatients(cls):
+        query = (f"SELECT * FROM {cls.tableName} WHERE utype=%s")
+        results = DBConnect.getall(query,("patient",))
         users = []
         for result in results:
             users.append(User(result))

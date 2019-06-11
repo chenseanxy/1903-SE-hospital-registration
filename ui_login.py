@@ -3,7 +3,7 @@ from tkinter import messagebox
 from user import User, UserDAO, getSHA256
 from out import out
 
-class login(object):
+class ui_login(object):
     def __init__(self):
 
         self.tk = Tk()
@@ -56,4 +56,4 @@ class login(object):
         return None
 
 if __name__ == "__main__":
-    login()
+    ui_login()
