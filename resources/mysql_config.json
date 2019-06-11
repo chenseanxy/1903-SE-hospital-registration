@@ -1,0 +1,7 @@
+{
+    "user": "hospital",
+    "password": "hospital",
+    "host": "127.0.0.1",
+    "database": "hospital",
+    "raise_on_warnings": true
+  }
