@@ -2,19 +2,14 @@ from mysql_db import *
 from entities import *
 
 def getTable(obj):
-    pass
-    '''
     if(type(obj) == Flight):
         return "flights"
     if(type(obj) == Hotel):
         return "hotels"
     if(type(obj) == Bus):
         return "bus"
-    '''
 
 def getKeyName(table):
-    pass
-    '''
     if(table == "flights"):
         keyName = "flightNum"
     if(table == "hotels"):
@@ -26,12 +21,9 @@ def getKeyName(table):
     if(table == "customers"):
         keyName = "custID"
     return keyName
-    '''
 
 def add(obj):
     print(f"[BACKEND] Adding {obj}") 
-    pass
-    '''
     if(type(obj) == Flight):
         query = "INSERT INTO flights VALUES (%s,%s,%s,%s,%s,%s,%s)"
         params = obj.toTuple()
@@ -52,10 +44,8 @@ def add(obj):
 
     DBConnect.cursor.execute(query, params)
     DBConnect.cnx.commit()
-    '''
 
 def remove(primaryKey, table):
-    '''
     item = getValue(primaryKey, table)
     if(item == None):
         print(f"[BACKEND] Object {primaryKey} from {table} does not exist")
@@ -68,10 +58,8 @@ def remove(primaryKey, table):
 
     DBConnect.cursor.execute(query, (primaryKey,))
     DBConnect.cnx.commit()
-    '''
 
 def update(obj):
-    '''
     print(f"[BACKEND] Updating {obj}") 
     if(type(obj) == Flight):
         query = (f"UPDATE {getTable(obj)} "
@@ -96,7 +84,6 @@ def update(obj):
     
     DBConnect.cursor.execute(query, params)
     DBConnect.cnx.commit()
-    '''
 
 def getValue(primaryKey, cls):
     query = f"SELECT * FROM {cls.tableName()} WHERE {cls.keyName()}=%s"
@@ -107,7 +94,6 @@ def getValue(primaryKey, cls):
     return cls(result)
 
 def createObj(queryResult, table):
-    '''
     if(table == "flights"):
         return Flight(queryResult)
     if(table == "hotels"):
@@ -119,10 +105,8 @@ def createObj(queryResult, table):
     if(table == "customers"):
         return Customer(queryResult)
     return None
-    '''
 
 def queryTable(table):
-    '''
     query = f"SELECT * FROM {table}"
     DBConnect.cursor.execute(query)
     results = DBConnect.cursor.fetchall()
@@ -136,5 +120,4 @@ def queryTable(table):
 
     
     return objects
-    '''
 
