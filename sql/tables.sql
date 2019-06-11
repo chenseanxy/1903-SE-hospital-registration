@@ -28,3 +28,12 @@ create table patients(
     email varchar(200),
     phone varchar(50)
 );
+
+create table registrations(
+	rid varchar(20) primary key,
+    did varchar(20) references doctors(uid),
+    pid varchar(20) references patients(uid),
+    rtype varchar(20),
+    rtime varchar(100),
+    done boolean
+)
