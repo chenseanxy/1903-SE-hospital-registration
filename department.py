@@ -1,12 +1,11 @@
 from mysql_db import DBConnect
 
 class Department(object):
-    def __init__(self, tup):
-        if(type(tup) == tuple):
-            self.deptID = tup[0]
-            self.deptName = tup[1]
-            self.location = tup[2]
-            self.phone = tup[3]
+    def __init__(self, deptID, deptName, location, phone):
+        self.deptID = deptID
+        self.deptName = deptName
+        self.location = location
+        self.phone = phone
 
     def toTuple(self):
         return (self.deptID,
@@ -28,6 +27,13 @@ class DepartmentDAO(object):
     keyName = "deptID"
     
     @classmethod
+    def _rowToObj(cls, tup):
+        try:
+            return Department(*tup)
+        except:
+            return None
+
+    @classmethod
     def add(cls, obj):
         query = f"INSERT INTO {cls.tableName} VALUES (%s, %s, %s, %s)"
         DBConnect.sets(query, obj.toTuple())
@@ -39,7 +45,7 @@ class DepartmentDAO(object):
     @classmethod
     def get(cls, deptID):
         query = f"SELECT * FROM {cls.tableName} WHERE {cls.keyName}=%s"
-        return DBConnect.getone(query, (deptID,))
+        return cls._rowToObj(DBConnect.getone(query, (deptID,)))
     
     @classmethod
     def listAll(cls):
@@ -47,5 +53,5 @@ class DepartmentDAO(object):
         results = DBConnect.getall(query,())
         objs = []
         for result in results:
-            objs.append(Department(result))
+            objs.append(cls._rowToObj((result)))
         return objs
