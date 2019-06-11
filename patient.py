@@ -2,13 +2,12 @@ from mysql_db import DBConnect
 from user import UserDAO
 
 class Patient(object):
-    def __init__(self, tup):
-        if(type(tup) == tuple):
-            self.uid = tup[0]
-            self.name = tup[1]
-            self.balance = tup[2]
-            self.email = tup[3]
-            self.phone = tup[4]
+    def __init__(self, uid, name, balance, email, phone):
+        self.uid = uid
+        self.name = name
+        self.balance = balance
+        self.email = email
+        self.phone = phone
 
     def toTuple(self):
         return (self.uid,
@@ -34,6 +33,13 @@ class PatientDAO(object):
     keyName = "uid"
     
     @classmethod
+    def _rowToObj(cls, tup):
+        try:
+            return Patient(*tup)
+        except:
+            return None
+    
+    @classmethod
     def add(cls, obj):
         query = f"INSERT INTO {cls.tableName} VALUES (%s, %s, %s, %s, %s)"
         DBConnect.sets(query, obj.toTuple())
@@ -49,12 +55,7 @@ class PatientDAO(object):
     @classmethod
     def get(cls, uid):
         query = f"SELECT * FROM {cls.tableName} WHERE {cls.keyName}=%s"
-        return DBConnect.getone(query, (uid,))
-    
-    @classmethod
-    def getByUsername(cls, username):
-        query = f"SELECT * FROM {cls.tableName} WHERE username=%s"
-        return DBConnect.getone(query, (username,))
+        return cls._rowToObj(DBConnect.getone(query, (uid,)))
     
     @classmethod
     def listAll(cls):
@@ -62,5 +63,5 @@ class PatientDAO(object):
         results = DBConnect.getall(query,())
         objs = []
         for result in results:
-            objs.append(Patient(result))
+            objs.append(cls._rowToObj(result))
         return objs

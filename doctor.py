@@ -2,11 +2,10 @@ from mysql_db import DBConnect
 from user import UserDAO
 
 class Doctor(object):
-    def __init__(self, tup):
-        if(type(tup) == tuple):
-            self.uid = tup[0]
-            self.name = tup[1]
-            self.deptID = tup[2]
+    def __init__(self, uid, name, deptID):
+        self.uid = uid
+        self.name = name
+        self.deptID = deptID
 
     def toTuple(self):
         return (self.uid,
@@ -28,7 +27,14 @@ class Doctor(object):
 class DoctorDAO(object):
     tableName = "doctors"
     keyName = "uid"
-    
+
+    @classmethod
+    def _rowToObj(cls, tup):
+        try:
+            return Doctor(*tup)
+        except:
+            return None
+
     @classmethod
     def add(cls, obj):
         query = f"INSERT INTO {cls.tableName} VALUES (%s, %s, %s)"
@@ -45,7 +51,8 @@ class DoctorDAO(object):
     @classmethod
     def get(cls, uid):
         query = f"SELECT * FROM {cls.tableName} WHERE {cls.keyName}=%s"
-        return DBConnect.getone(query, (uid,))
+        row = DBConnect.getone(query, (uid,))
+        return cls._rowToObj(row)
         
     @classmethod
     def listAll(cls):
@@ -53,5 +60,5 @@ class DoctorDAO(object):
         results = DBConnect.getall(query,())
         objs = []
         for result in results:
-            objs.append(Doctor(result))
+            objs.append(cls._rowToObj(result))
         return objs

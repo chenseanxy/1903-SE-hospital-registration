@@ -6,12 +6,11 @@ def getSHA256(password):
     return sha256(password.encode("utf8")).hexdigest()
 
 class User(object):
-    def __init__(self, tup):
-        if(type(tup) == tuple):
-            self.uid = tup[0]
-            self.username = tup[1]
-            self.hashPassword = tup[2]
-            self.utype = tup[3]
+    def __init__(self, uid, username, hashPassword, utype):
+        self.uid = uid
+        self.username = username
+        self.hashPassword = hashPassword
+        self.utype = utype
 
     def toTuple(self):
         return (self.uid,
@@ -33,6 +32,13 @@ class UserDAO(object):
     keyName = "uid"
     
     @classmethod
+    def _rowToObj(cls, tup):
+        try:
+            return User(*tup)
+        except:
+            return None
+
+    @classmethod
     def add(cls, user):
         query = f"INSERT INTO {cls.tableName} VALUES (%s, %s, %s, %s)"
         DBConnect.sets(query, user.toTuple())
@@ -48,12 +54,12 @@ class UserDAO(object):
     @classmethod
     def get(cls, uid):
         query = f"SELECT * FROM {cls.tableName} WHERE {cls.keyName}=%s"
-        return DBConnect.getone(query, (uid,))
+        return cls._rowToObj(DBConnect.getone(query, (uid,)))
     
     @classmethod
     def getByUsername(cls, username):
         query = f"SELECT * FROM {cls.tableName} WHERE username=%s"
-        return DBConnect.getone(query, (username,))
+        return cls._rowToObj(DBConnect.getone(query, (username,)))
     
     @classmethod
     def listAll(cls):
@@ -61,7 +67,7 @@ class UserDAO(object):
         results = DBConnect.getall(query,())
         users = []
         for result in results:
-            users.append(User(result))
+            users.append(cls._rowToObj(result))
         return users
 
     @classmethod
@@ -70,7 +76,7 @@ class UserDAO(object):
         results = DBConnect.getall(query,("doctor",))
         users = []
         for result in results:
-            users.append(User(result))
+            users.append(cls._rowToObj(result))
         return users
     
     @classmethod
@@ -79,5 +85,5 @@ class UserDAO(object):
         results = DBConnect.getall(query,("patient",))
         users = []
         for result in results:
-            users.append(User(result))
+            users.append(cls._rowToObj(result))
         return users
