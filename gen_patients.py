@@ -12,7 +12,7 @@ for user in users:
     balance = random.randint(0, 1000000)/100
     email = fake.email()
     phone = fake.phone_number()
-    pat = Patient((uid, name, balance, email, phone))
+    pat = Patient(uid, name, balance, email, phone)
     PatientDAO.add(pat)
 
 for patient in PatientDAO.listAll():

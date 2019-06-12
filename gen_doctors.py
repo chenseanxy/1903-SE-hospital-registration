@@ -12,7 +12,7 @@ for user in dusers:
     uid = user.uid
     name = fake.name()
     deptID = random.choice(departments).deptID
-    doc = Doctor((uid, name, deptID))
+    doc = Doctor(uid, name, deptID)
     print(doc)
     DoctorDAO.add(doc)
 
