@@ -15,6 +15,9 @@ class Department(object):
 
     def getPrimaryKey(self):
         return self.deptID
+    
+    def getIdAsInt(self):
+        return int(self.deptID)
 
     def __str__(self):
         return f"[Department] {self.toTuple()}"

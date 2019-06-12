@@ -62,3 +62,12 @@ class DoctorDAO(object):
         for result in results:
             objs.append(cls._rowToObj(result))
         return objs
+    
+    @classmethod
+    def listByDepartment(cls, deptID):
+        query = (f"SELECT * FROM {cls.tableName} WHERE deptID=%s")
+        results = DBConnect.getall(query,(deptID,))
+        objs = []
+        for result in results:
+            objs.append(cls._rowToObj(result))
+        return objs

@@ -1,5 +1,5 @@
 
-def out(str, *args, **argss):
+def out(s, *args, **argss):
     debug = True
     if(debug):
-        print(str, *args, **argss)
+        print("[DEBUG]", s, *args, **argss)

@@ -1,6 +1,7 @@
 import json
 from hashlib import sha256
 from mysql_db import DBConnect
+from random import randint
 
 def getSHA256(password):
     return sha256(password.encode("utf8")).hexdigest()
@@ -87,3 +88,10 @@ class UserDAO(object):
         for result in results:
             users.append(cls._rowToObj(result))
         return users
+    
+    @classmethod
+    def newID(cls):
+        newid = randint(100000, 999999)
+        while cls.get(newid) != None:
+            newid = randint(100000, 999999)
+        return newid

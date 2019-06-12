@@ -15,7 +15,7 @@ for i in range(len(names)):
     deptID = i+1
     location = getLocation()
     phone = fake.phone_number()
-    dept = Department((deptID, deptName, location, phone))
+    dept = Department(deptID, deptName, location, phone)
     print(dept)
 
     DepartmentDAO.add(dept)

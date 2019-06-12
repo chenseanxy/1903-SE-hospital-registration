@@ -22,7 +22,10 @@ class Registration(object):
                 self.done)
 
     def getPrimaryKey(self):
-        return self.uid
+        return self.rid
+
+    def getRTime(self):
+        return self.rtime
 
     def __str__(self):
         return f"[Registration] {self.toTuple()}"
