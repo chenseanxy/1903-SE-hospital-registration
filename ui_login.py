@@ -3,6 +3,7 @@ from tkinter import messagebox
 from user import User, UserDAO, getSHA256
 from out import out
 from ui_patient import ui_patient
+from ui_doctor import ui_doctor
 
 class ui_login(object):
     def __init__(self):
@@ -34,7 +35,7 @@ class ui_login(object):
         if(type(loginResult) == User):
             out(f"[LOGIN] Successful", loginResult)
             if(loginResult.utype == "doctor"):
-                
+                ui_doctor(loginResult.uid)
                 return
             if(loginResult.utype == "patient"):
                 ui_patient(loginResult.uid)

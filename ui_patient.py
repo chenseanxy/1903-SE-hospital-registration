@@ -15,7 +15,7 @@ def rtypePrint(rtype):
         printType = "普通"
     return printType
 
-def resultToString(result):
+def patientResultToString(result):
     doctor = DoctorDAO.get(result.did)
     dept = DepartmentDAO.get(doctor.deptID)
     if result.rtype == "pro":
@@ -64,7 +64,7 @@ class ui_patient(object):
         for result in results:
             if result == None:
                 continue
-            rows.append(resultToString(result))
+            rows.append(patientResultToString(result))
         
         self.pendingFrameLabels = []
         for i in range(len(rows)):
@@ -85,8 +85,8 @@ class ui_patient(object):
         results.sort(key=Registration.getRTime)
         self.detailedList = []
         for result in results:
-            self.detailedList.append(resultToString(result))
-            out(resultToString(result))
+            self.detailedList.append(patientResultToString(result))
+            out(patientResultToString(result))
         self.detailedSelect.set(self.detailedList[0])
         self.detailedOption = OptionMenu(self.detailedFrame, self.detailedSelect, *self.detailedList, command=self.updateInfoFrame)
         self.detailedOption.config(width=43)
@@ -171,7 +171,7 @@ class ui_patientHistory(object):
         for result in results:
             if result == None:
                 continue
-            rows.append(resultToString(result))
+            rows.append(patientResultToString(result))
         
         self.pendingFrameLabels = []
         for i in range(len(rows)):

@@ -4,10 +4,10 @@ from user import User, UserDAO, getSHA256
 
 fake = Faker("zh_CN")
 
-for i in range(500):
+for i in range(800):
     uid = UserDAO.newID()
     username = fake.user_name()
-    utype = random.choice(["patient"]*9 + ["doctor"])
+    utype = random.choice(["patient"]*7 + ["doctor"])
     if(utype == "doctor"):
         password = "doctor"
     else:
@@ -16,7 +16,10 @@ for i in range(500):
 
     user = User(uid, username, hashPassword, utype)
     print(user)
-    UserDAO.add(user)
+    try:
+        UserDAO.add(user)
+    except:
+        continue
 
 uid = str(random.randint(100000, 999999))
 username = "doctor"

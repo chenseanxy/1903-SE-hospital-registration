@@ -7,7 +7,7 @@ from registration import Registration, RegistrationtDAO
 fake = Faker("zh_CN")
 patients = PatientDAO.listAll()
 doctors = DoctorDAO.listAll()
-for i in range(5000):
+for i in range(6000):
     rtypes = ["normal", "pro"]
     done = random.choice([True]*9 +[False]*1)
     rid = RegistrationtDAO.newID()

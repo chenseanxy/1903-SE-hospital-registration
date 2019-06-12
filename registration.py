@@ -67,7 +67,7 @@ class RegistrationtDAO(object):
         query = (f"UPDATE {cls.tableName} "
                 "SET did=%s, pid=%s, rtype=%s, rtime=%s, done=%s "
                 f"WHERE {cls.keyName}=%s")
-        params = (obj.did, obj.pid, obj.rtype, obj.rtime, obj.done)
+        params = (obj.did, obj.pid, obj.rtype, obj.rtime.strftime("%m/%d/%Y %H:%M:%S"), obj.done, obj.rid)
         DBConnect.sets(query, params)
 
     @classmethod
